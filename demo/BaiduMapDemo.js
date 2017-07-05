@@ -30,7 +30,7 @@ export default class BaiduMapDemo extends Component {
     super();
 
     this.state = {
-      mayType: MapTypes.NORMAL,
+      mapType: MapTypes.NORMAL,
       zoom: 15,
       center: {
         longitude: 113.981718,
