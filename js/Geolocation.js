@@ -12,9 +12,31 @@ import React, {
 
 
 const _module = NativeModules.BaiduGeolocationModule;
+const geolocationControl = Platform.OS === 'web' ? new BMap.GeolocationControl() : {};
 
 export default {
+  geolocationControl,
   geocode(city, addr) {
+    if (Platform.OS === 'web') {
+      return new Promise((resolve, reject) => {
+        try {
+          const geo = new BMap.Geocoder();
+          geo.getPoint(addr, function(resp) {
+            if (resp) {
+              resolve({
+                longitude: resp.lng,
+                latitude: resp.lat
+              });
+            } else {
+              reject(resp);
+            }
+          }, city);
+        } catch (e) {
+          reject(e);
+          return;
+        }
+      });
+    }
     return new Promise((resolve, reject) => {
       try {
         _module.geocode(city, addr);
@@ -59,7 +81,31 @@ export default {
     });
   },
   getCurrentPosition() {
-    if (Platform.OS == 'ios') {
+    if (Platform.OS === 'web') {
+      return new Promise((resolve, reject) => {
+        try {
+          geolocationControl.addEventListener('locationSuccess', resp => {
+            resolve({
+              longitude: resp.point.lng,
+              latitude: resp.point.lat,
+              address: resp.addressComponent.province + resp.addressComponent.city + resp.addressComponent.district + resp.addressComponent.street + resp.addressComponent.streetNumber,
+              province: resp.addressComponent.province,
+              city: resp.addressComponent.city,
+              district: resp.addressComponent.district,
+              street: resp.addressComponent.street
+            });
+          });
+          geolocationControl.addEventListener('locationError', resp => {
+            reject(resp);
+          });
+          geolocationControl.location();
+        } catch (e) {
+          reject(e);
+          return;
+        }
+      });
+    }
+    if (Platform.OS === 'ios') {
       return new Promise((resolve, reject) => {
         navigator.geolocation.getCurrentPosition((position) => {
           try {
@@ -95,5 +141,10 @@ export default {
         resolve(resp);
       });
     });
+  },
+  addOnGetCurrentLocationPosition(handler) {
+    DeviceEventEmitter.addListener('onGetCurrentLocationPosition', resp => {
+        handler(resp);
+      });
   }
 };

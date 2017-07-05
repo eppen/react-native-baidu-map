@@ -77,6 +77,8 @@ onClickedMapBlank:(CLLocationCoordinate2D)coordinate {
 
 -(void)mapView:(BMKMapView *)mapView
 didSelectAnnotationView:(BMKAnnotationView *)view {
+    [mapView setCenterCoordinate:view.annotation.coordinate animated:YES];
+    [mapView deselectAnnotation:view.annotation animated:YES];
     NSDictionary* event = @{
                             @"type": @"onMarkerClick",
                             @"params": @{
@@ -109,6 +111,7 @@ didSelectAnnotationView:(BMKAnnotationView *)view {
     if ([annotation isKindOfClass:[BMKPointAnnotation class]]) {
         BMKPinAnnotationView *newAnnotationView = [[BMKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"myAnnotation"];
         newAnnotationView.pinColor = BMKPinAnnotationColorPurple;
+        newAnnotationView.image = [UIImage imageNamed:@"icon_kezulin"];
         newAnnotationView.animatesDrop = YES;
         return newAnnotationView;
     }

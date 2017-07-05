@@ -40,6 +40,35 @@ project(':react-native-baidu-map').projectDir = new File(settingsDir, '../node_m
         ...
     }
 
+#### Web
+需要在 github.com/taobaofed/react-web 所形成的 web/webpack.config.js 中修改成如下内容：
+```
+    new HtmlPlugin({
+      template: path.join(__dirname, 'index.html')
+    }),
+```
+同时也在 react-web 自动生成的原始 index.html 中添加一个 `<script src="https://api.map.baidu.com/api?v=1.4&ak="></script>` 成为类似如下的 web/index.html 文件：
+```
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>Webpack App</title>
+
+
+  </head>
+  <body>
+
+    <script src="https://api.map.baidu.com/api?v=1.4&ak="></script>
+    <script src="bundle.js"></script>
+
+  </body>
+</html>
+```
+
+最后使用下面的 callback 属性为例如 callback={map => {map.centerAndZoom('杭州', 15)}} 即可。
+
 ### Usage 使用方法
 
     import { MapView, MapTypes, MapModule, Geolocation } from 'react-native-baidu-map
@@ -47,6 +76,7 @@ project(':react-native-baidu-map').projectDir = new File(settingsDir, '../node_m
 #### MapView Props 属性
 | Name                    | Type  | Default  | Extra
 | ----------------------- |:-----:| :-------:| -------
+| callback                | func  | `map => {map.centerAndZoom('杭州', 15)}` | Web only
 | zoomControlsVisible     | bool  | true     | Android only
 | trafficEnabled          | bool  | false    |
 | baiduHeatMapEnabled     | bool  | false    |
