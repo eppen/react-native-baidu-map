@@ -9,3 +9,6 @@ android/local.properties
 .idea
 npm-debug.log
 demo
+config
+.git
+images
