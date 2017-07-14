@@ -78,6 +78,7 @@ project(':react-native-bmap').projectDir = new File(settingsDir, '../node_module
 | ----------------------- |:-----:| :-------:| -------
 | callback                | func  | `map => {map.centerAndZoom('杭州', 15)}` | Web only
 | zoomControlsVisible     | bool  | true     | Android only
+| zoomControlsPosition    | object| null     | Android only e.g {x: 0, y: 0}
 | trafficEnabled          | bool  | false    |
 | baiduHeatMapEnabled     | bool  | false    |
 | mapType                 | number| 1        |

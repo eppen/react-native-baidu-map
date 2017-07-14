@@ -9,3 +9,4 @@ android/local.properties
 .idea
 npm-debug.log
 config
+/android/app/build
