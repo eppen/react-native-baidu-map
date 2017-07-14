@@ -165,6 +165,17 @@ public class BaiduMapViewManager extends ViewGroupManager<MapView> {
         }
     }
 
+    @ReactProp(name = "zoomControlPosition")
+    public void setZoomControlsPosition(MapView mapView, ReadableMap position){
+        if (position != null){
+            int x = position.getInt("x");
+            int y = position.getInt("y");
+            Point p = new Point(x,y);
+            mapView.setZoomControlsPosition(p);
+        }
+
+    }
+
     @ReactProp(name = "local")
     public void setLocal(MapView mapView, ReadableMap position) {
         if (position != null && position.hasKey("latitude")) {
@@ -362,6 +373,7 @@ public class BaiduMapViewManager extends ViewGroupManager<MapView> {
                 return true;
             }
         });
+
     }
     
 

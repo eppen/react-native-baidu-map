@@ -28,6 +28,7 @@ public class MarkerUtil {
         bundle.putString("bizId",option.getString("bizId"));//业务Id
 	    int icon = selectedImage(option);
         BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(icon);
+        maker.setExtraInfo(bundle);
 	    maker.setIcon(bitmap);
 	    maker.setDraggable(false);
     }
@@ -45,6 +46,7 @@ public class MarkerUtil {
                 .extraInfo(bundle)
                 .title(option.getString("title"));
         Marker marker = (Marker)mapView.getMap().addOverlay(overlayOptions);
+        marker.setExtraInfo(bundle);
         marker.setDraggable(false);
         return marker;
     }
