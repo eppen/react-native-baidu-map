@@ -27,6 +27,7 @@ export default class MapView extends Component {
     id: PropTypes.string,
     callback: PropTypes.func,
     zoomControlsVisible: PropTypes.bool,
+    zoomControlsPosition: PropTypes.object,
     trafficEnabled: PropTypes.bool,
     baiduHeatMapEnabled: PropTypes.bool,
     mapType: PropTypes.number,
@@ -49,6 +50,7 @@ export default class MapView extends Component {
   static defaultProps = {
     callback: map => map.centerAndZoom('杭州', 15), // 当检测到 Web 的 BMap 加载完毕后执行
     zoomControlsVisible: true,
+    zoomControlsPosition: null,
     trafficEnabled: false,
     baiduHeatMapEnabled: false,
     mapType: MapTypes.NORMAL,
@@ -104,7 +106,7 @@ export default class MapView extends Component {
         id: this.id
       });
     } else {
-      return <BaiduMapView {...this.props} onChange={this._onChange.bind(this)}/>;
+      return (<BaiduMapView {...this.props} onChange={this._onChange.bind(this)}/>);
     }
   }
 }
