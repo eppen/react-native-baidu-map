@@ -2,6 +2,7 @@ package org.lovebing.reactnative.baidumap;
 
 import android.content.Context;
 import android.graphics.Point;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
@@ -98,7 +99,7 @@ public class BaiduMapViewManager extends ViewGroupManager<MapView> {
         return MapBuilder.of(
                 "updateMaker",
                 BaiduMapViewManager.UPDATE_MARKER,
-		"updateCenter",
+                "updateCenter",
                 BaiduMapViewManager.UPDATE_CENTER
         );
     }
@@ -110,9 +111,9 @@ public class BaiduMapViewManager extends ViewGroupManager<MapView> {
             case BaiduMapViewManager.UPDATE_MARKER:
                 updateMarker(view, args.getMap(0));
                 break;
-	    case BaiduMapViewManager.UPDATE_CENTER: 
-		updateCenter(view, args.getMap(0));
-		break;
+            case BaiduMapViewManager.UPDATE_CENTER:
+                updateCenter(view, args.getMap(0));
+                break;
             default:
                 throw new JSApplicationIllegalArgumentException(String.format(
                         "Unsupported commadn %d received by $s",
@@ -222,7 +223,7 @@ public class BaiduMapViewManager extends ViewGroupManager<MapView> {
     }
     
     private void updateCenter(MapView mapView, ReadableMap position) {
-	if (position != null) {
+	    if (position != null) {
             double latitude = position.getDouble("latitude");
             double longitude = position.getDouble("longitude");
             LatLng point = new LatLng(latitude, longitude);
@@ -349,12 +350,14 @@ public class BaiduMapViewManager extends ViewGroupManager<MapView> {
         map.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
+                Bundle bundle = marker.getExtraInfo();
                 WritableMap writableMap = Arguments.createMap();
                 WritableMap position = Arguments.createMap();
                 position.putDouble("latitude", marker.getPosition().latitude);
                 position.putDouble("longitude", marker.getPosition().longitude);
                 writableMap.putMap("position", position);
                 writableMap.putString("title", marker.getTitle());
+                writableMap.putString("bizId",bundle.getString("bizId"));//业务用id
                 sendEvent(mapView, "onMarkerClick", writableMap);
                 return true;
             }

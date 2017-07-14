@@ -1,5 +1,6 @@
 package org.lovebing.reactnative.baidumap;
 
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 
@@ -23,6 +24,8 @@ public class MarkerUtil {
         LatLng position = getLatLngFromOption(option);
         maker.setPosition(position);
         maker.setTitle(option.getString("title"));
+        Bundle bundle = new Bundle();
+        bundle.putString("bizId",option.getString("bizId"));//业务Id
 	    int icon = selectedImage(option);
         BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(icon);
 	    maker.setIcon(bitmap);
@@ -32,11 +35,14 @@ public class MarkerUtil {
     public static Marker addMarker(MapView mapView, ReadableMap option) {
 	    int icon = selectedImage(option);
         BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(icon);
+        Bundle bundle = new Bundle();
+        bundle.putString("bizId",option.getString("bizId"));//业务ID
         LatLng position = getLatLngFromOption(option);
         OverlayOptions overlayOptions = new MarkerOptions()
 		.animateType(MarkerAnimateType.grow)
                 .icon(bitmap)
                 .position(position)
+                .extraInfo(bundle)
                 .title(option.getString("title"));
         Marker marker = (Marker)mapView.getMap().addOverlay(overlayOptions);
         marker.setDraggable(false);
