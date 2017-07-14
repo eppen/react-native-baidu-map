@@ -165,7 +165,7 @@ public class BaiduMapViewManager extends ViewGroupManager<MapView> {
         }
     }
 
-    @ReactProp(name = "zoomControlPosition")
+    @ReactProp(name = "zoomControlsPosition")
     public void setZoomControlsPosition(MapView mapView, ReadableMap position){
         if (position != null){
             int x = position.getInt("x");
